@@ -27,16 +27,20 @@ def get_image():
     size = (width, height)
 
     response = requests.get(url)
+    content_type = response.headers.get("content-type")
+    response_type, file_type = content_type.split('/')
+    if not response_type == "image":
+        return "Not an image!"
 
     img = Image.open(StringIO(response.content))
 
     img_io = StringIO()
     img.thumbnail(size, Image.ANTIALIAS)
-    img.save(img_io, quality=quality)
+    img.save(img_io, format=file_type, quality=quality)
 
     img_io.seek(0)
 
-    return send_file(img_io, mimetype='image/jpeg')
+    return send_file(img_io, mimetype=content_type)
 
 
 if __name__ == "__main__":
