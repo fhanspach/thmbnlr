@@ -32,7 +32,7 @@ def get_image():
 
     img_io = StringIO()
     img.thumbnail(size, Image.ANTIALIAS)
-    img.save(img_io, 'JPEG', quality=quality)
+    img.save(img_io, quality=quality)
 
     img_io.seek(0)
 
