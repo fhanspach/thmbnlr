@@ -18,6 +18,10 @@ def get_image():
     width = int(request.args.get('width', sys.maxint))
     height = int(request.args.get('height', sys.maxint))
     quality = int(request.args.get('quality', 100))
+    response = requests.get(url)
+
+    if height == sys.maxint and width == sys.maxint and quality == 100:
+        return response.content, response.status_code, response.headers.items()
     if quality > 100:
         quality = 100
     elif quality < 0:
@@ -26,7 +30,6 @@ def get_image():
 
     size = (width, height)
 
-    response = requests.get(url)
     content_type = response.headers.get("content-type")
     response_type, file_type = content_type.split('/')
     if not response_type == "image":
