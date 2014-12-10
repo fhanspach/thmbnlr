@@ -34,7 +34,13 @@ def get_image():
         max_size *= 1024
 
     header = requests.head(url).headers
-    response_size = header.get('Content-Length')
+
+    content_type = header.get("content-type")
+    response_type, file_type = content_type.split('/')
+    if not response_type == "image":
+        return "Not an image!"
+
+    response_size = header.get('Content-Length', sys.maxint)
     in_size = int(response_size) <= max_size
 
     if (height == sys.maxint and width == sys.maxint and quality == 100) or in_size:
@@ -47,10 +53,6 @@ def get_image():
         return "quality must not be under 0!"
 
     response = requests.get(url)
-    content_type = response.headers.get("content-type")
-    response_type, file_type = content_type.split('/')
-    if not response_type == "image":
-        return "Not an image!"
 
     img_io = resize_image(file_type, width, height, quality, response.content)
 
