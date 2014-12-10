@@ -1,62 +1,120 @@
 from StringIO import StringIO
-from flask import Flask, send_file, request, redirect
-
-from PIL import Image
-import requests
 import sys
+
+import requests
+from flask import Flask, send_file, request, redirect
+from PIL import Image
 
 app = Flask(__name__)
 
-
-def resize_image(file_type, width, height, quality, image):
-    size = (width, height)
-    img = Image.open(StringIO(image))
-    img_io = StringIO()
-    img.thumbnail(size, Image.ANTIALIAS)
-    img.save(img_io, format=file_type, quality=quality)
-    img_io.seek(0)
-    return img_io
+ERR_URL_MISSING = "URL must not be None!"
+ERR_URL_IS_NOT_AN_IMAGE = "Not an image!"
 
 
 @app.route("/")
 def get_image():
-    url = request.args.get('url', None)
+    get_query = request.args.to_dict(flat=True)
+
+    url = get_query.pop('url', None)
     if not url:
-        return "URL must not be None!"
-    # TODO test if request is an image
+        return ERR_URL_MISSING
 
-    width = int(request.args.get('width', sys.maxint))
-    height = int(request.args.get('height', sys.maxint))
-    quality = int(request.args.get('quality', 100))
-    max_size = int(request.args.get('max_size', 0))
+    thmbnlr = Thmbnlr(url, **get_query)
 
-    if max_size > 0:
-        max_size *= 1024
+    return thmbnlr()
 
-    header = requests.head(url).headers
 
-    content_type = header.get("content-type")
-    response_type, file_type = content_type.split('/')
-    if not response_type == "image":
-        return "Not an image!"
+class Thmbnlr():
+    def __init__(self, url, width=sys.maxint, height=sys.maxint, quality=100, max_size=0):
+        self.url = url
+        self.width = int(width)
+        self.height = int(height)
+        self._quality = int(quality)
+        self.max_size = int(max_size)
 
-    response_size = header.get('Content-Length', sys.maxint)
-    in_size = int(response_size) <= max_size
+        self._head = None
+        self._image = None
 
-    if (height == sys.maxint and width == sys.maxint and quality == 100) or in_size:
-        return redirect(url)
+    def __call__(self):
+        if not self.check_if_image():
+            return ERR_URL_IS_NOT_AN_IMAGE
 
-    if quality > 100:
-        quality = 100
-    elif quality < 0:
-        # todo better errors
-        return "quality must not be under 0!"
+        in_size = self.check_file_size()
 
-    response = requests.get(url)
+        if (self.height == sys.maxint and self.width == sys.maxint and self.quality == 100) or in_size:
+            return redirect(self.url)
 
-    img_io = resize_image(file_type, width, height, quality, response.content)
+        img_io = self.resize_image()
 
-    return send_file(img_io, mimetype=content_type)
+        return send_file(img_io, mimetype=self.content_type)
+
+    def resize_image(self):
+        size = (self.width, self.height)
+        img = Image.open(StringIO(self.image))
+        img_io = StringIO()
+        img.thumbnail(size, Image.ANTIALIAS)
+        img.save(img_io, format=self.file_type, quality=self.quality)
+        img_io.seek(0)
+        return img_io
+
+    def check_file_size(self):
+        response_size = self.file_size
+        return int(response_size) <= self.max_size_in_bytes
+
+    def check_if_image(self):
+        return self.response_type == "image"
+
+    @property
+    def file_type(self):
+        _, file_type = self.content_type.split('/')
+
+        return file_type
+
+    @property
+    def response_type(self):
+        response_type, _ = self.content_type.split('/')
+
+        return response_type
+
+    @property
+    def content_type(self):
+        headers = self.head.headers
+        content_type = headers.get("content-type")
+
+        return content_type
+
+    @property
+    def max_size_in_bytes(self):
+        if self.max_size == 0:
+            return 0
+        return self.max_size * 1024
+
+    @property
+    def quality(self):
+        # TODO check if quality is under 0
+        if self._quality > 100:
+            return 100
+        return self._quality
+
+    @property
+    def head(self):
+        # TODO check status code
+        if not self._head:
+            self._head = requests.head(self.url, allow_redirects=True)
+        return self._head
+
+    @property
+    def image(self):
+        if not self._image:
+            self._image = requests.get(self.url, allow_redirects=True)
+
+        return self._image.content
+
+    @property
+    def file_size(self):
+        headers = self.head.headers
+        response_size = headers.get('Content-Length', sys.maxint)
+        return response_size
 
 
 if __name__ == "__main__":
