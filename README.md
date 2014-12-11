@@ -1,4 +1,5 @@
 thmbnlr
 =======
 
-A simple python webservice for getting thumbnails for an image url
+A simple Flask-based webservice for getting thumbnails for an image URL.
+
