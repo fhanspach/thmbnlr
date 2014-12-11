@@ -2,7 +2,7 @@ from StringIO import StringIO
 import sys
 
 import requests
-from flask import Flask, send_file, request, redirect
+from flask import Flask, send_file, request, redirect, jsonify
 from PIL import Image
 
 app = Flask(__name__)
@@ -20,8 +20,12 @@ def get_image():
         return ERR_URL_MISSING
 
     thmbnlr = Thmbnlr(url, **get_query)
+    try:
+        result = thmbnlr()
+    except requests.exceptions.HTTPError as e:
+        return jsonify(**{"request_url": e.request.url, "status_code": e.response.status_code}), e.response.status_code
 
-    return thmbnlr()
+    return result
 
 
 class Thmbnlr():
