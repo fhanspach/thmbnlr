@@ -91,22 +91,24 @@ class Thmbnlr():
 
     @property
     def quality(self):
-        # TODO check if quality is under 0
         if self._quality > 100:
             return 100
+        elif self._quality < 100:
+            return 0
         return self._quality
 
     @property
     def head(self):
-        # TODO check status code
         if not self._head:
             self._head = requests.head(self.url, allow_redirects=True)
+            self._head.raise_for_status()
         return self._head
 
     @property
     def image(self):
         if not self._image:
             self._image = requests.get(self.url, allow_redirects=True)
+            self._image.raise_for_status()
 
         return self._image.content
 
