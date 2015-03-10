@@ -4,11 +4,13 @@ import sys
 import requests
 from flask import Flask, send_file, request, redirect, jsonify
 from PIL import Image
+import os
 
 app = Flask(__name__)
 
 ERR_URL_MISSING = "URL must not be None!"
 ERR_URL_IS_NOT_AN_IMAGE = "Not an image!"
+DEBUG = os.environ.get('THMBNLR_DEBUG', False)
 
 
 @app.route("/")
@@ -124,4 +126,4 @@ class Thmbnlr():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)
