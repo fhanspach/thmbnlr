@@ -2,7 +2,7 @@ from StringIO import StringIO
 import sys
 
 import requests
-from flask import Flask, send_file, request, redirect, jsonify
+from flask import Flask, send_file, request, redirect, jsonify, render_template
 from PIL import Image
 import os
 
@@ -19,7 +19,7 @@ def get_image():
 
     url = get_query.pop('url', None)
     if not url:
-        return ERR_URL_MISSING
+        return render_template("landing_page.html")
 
     thmbnlr = Thmbnlr(url, **get_query)
     try:
