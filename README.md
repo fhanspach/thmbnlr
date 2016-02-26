@@ -1,5 +1,19 @@
 thmbnlr
 =======
 
-A simple Flask-based webservice for getting thumbnails for an image URL.
+Thmbnlr is a simple Flask-based microservice for getting thumbnails for an image URL.
+
+To use the thmbnlr service you have to specify load the image as in the following example:
+`http://thmbnlr.your-domain.org/?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&max_size=100`
+This returns an image with a maximum width of 100 px and a maximum size of 100 kByte.
+
+When an image already satisfies all given requirements, thmbnlr will redirect you to the original image.
+
+### Possible Parameters
+|  Parameter 	| Description  	|Default|
+|---	|---	|--- |
+| **url**  	| mandatory - The url of the original image   	|- |
+| width/height  	| the target width/height of the thumbnail image 	| original width/height|
+| quality  	| The degree of compression in percent. 100 is the image without quality loss	| 100|
+| size  	| The maximum size of the result image in kB	| original size |
 
