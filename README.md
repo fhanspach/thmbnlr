@@ -12,8 +12,8 @@ When an image already satisfies all given requirements, thmbnlr will redirect yo
 ### Possible Parameters
 |  Parameter 	| Description  	|Default|
 |---	|---	|--- |
-| **url**  	| mandatory - The url of the original image   	|- |
-| width/height  	| the target width/height of the thumbnail image 	| original width/height|
+| **url**  	| Mandatory - The url of the original image.   	|- |
+| width/height  	| The target width/height of the thumbnail image.	Typically only one is specified, since thmbnlr always keeps the original aspect ratio of the image. | original width/height|
 | quality  	| The degree of compression in percent. 100 is the image without quality loss	| 100|
 | size  	| The maximum size of the result image in kB	| original size |
 
