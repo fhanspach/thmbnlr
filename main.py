@@ -1,4 +1,7 @@
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import BytesIO as StringIO
 import sys
 
 import requests
@@ -31,7 +34,7 @@ def get_image():
 
 
 class Thmbnlr():
-    def __init__(self, url, width=sys.maxint, height=sys.maxint, quality=100, max_size=0):
+    def __init__(self, url, width=sys.maxsize, height=sys.maxsize, quality=100, max_size=0):
         self.url = url
         self.width = int(width)
         self.height = int(height)
@@ -47,7 +50,7 @@ class Thmbnlr():
 
         in_size = self.check_file_size()
 
-        if (self.height == sys.maxint and self.width == sys.maxint and self.quality == 100) or in_size:
+        if (self.height == sys.maxsize and self.width == sys.maxsize and self.quality == 100) or in_size:
             return redirect(self.url)
 
         img_io = self.resize_image()
@@ -99,7 +102,7 @@ class Thmbnlr():
     def quality(self):
         if self._quality > 100:
             return 100
-        elif self._quality < 100:
+        elif self._quality < 0:
             return 0
         return self._quality
 
@@ -121,7 +124,7 @@ class Thmbnlr():
     @property
     def file_size(self):
         headers = self.head.headers
-        response_size = headers.get('Content-Length', sys.maxint)
+        response_size = headers.get('Content-Length', sys.maxsize)
         return response_size
 
 
