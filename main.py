@@ -22,8 +22,7 @@ def get_image():
 
     url = get_query.pop('url', None)
     if not url:
-        return render_template("landing_page.html")
-
+        return render_template("landing_page.html"), 400
     thmbnlr = Thmbnlr(url, **get_query)
     try:
         result = thmbnlr()
