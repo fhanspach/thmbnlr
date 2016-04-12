@@ -50,7 +50,9 @@ class Thmbnlr():
 
         in_size = self.check_file_size()
 
-        if (self.height == sys.maxsize and self.width == sys.maxsize and self.quality == 100) or in_size:
+        # redirect to the original image when no conversations are needed
+        if (self.height == sys.maxsize and self.width == sys.maxsize and self.quality == 100 and self.file_format is None) \
+                or in_size:
             return redirect(self.url)
 
         img_io = self.resize_image()
