@@ -26,7 +26,7 @@ The following GET-Parameters can be used to define the resulting image:
 | width/height  	| The target width/height of the thumbnail image.	Typically only one is specified, since thmbnlr always keeps the original aspect ratio of the image. | original width/height|
 | quality  	| The degree of compression in percent. 100 is the image without quality loss	| 100|
 | size  	| The maximum size of the result image in kB	| original size |
-| file_format  	| The file format of the resulting image. Should be one of the formats listed in: [http://pillow.readthedocs.org/en/3.1.x/handbook/image-file-formats.html]. Note that some formats need libraries for converting. | original size |
+| file_format  	| The file format of the resulting image. Should be one of the formats listed in: [http://pillow.readthedocs.org/en/3.1.x/handbook/image-file-formats.html]. Note that some formats need libraries for converting. | original format |
 
 When an image already satisfies all given requirements, thmbnlr will redirect you to the original image.
 
