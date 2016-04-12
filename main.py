@@ -34,13 +34,13 @@ def get_image():
 
 
 class Thmbnlr():
-    def __init__(self, url, width=sys.maxsize, height=sys.maxsize, quality=100, max_size=0):
+    def __init__(self, url, width=sys.maxsize, height=sys.maxsize, quality=100, max_size=0, file_format=None):
         self.url = url
         self.width = int(width)
         self.height = int(height)
         self._quality = int(quality)
         self.max_size = int(max_size)
-
+        self.file_format = file_format
         self._head = None
         self._image = None
 
@@ -75,6 +75,9 @@ class Thmbnlr():
 
     @property
     def file_type(self):
+        if self.file_format is not None:
+            return self.file_format
+
         _, file_type = self.content_type.split('/')
 
         return file_type
