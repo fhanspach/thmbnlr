@@ -33,7 +33,7 @@ def get_image():
 
 
 class Thmbnlr():
-    def __init__(self, url, width=sys.maxsize, height=sys.maxsize, quality=100, max_size=0):
+    def __init__(self, url, width=sys.maxsize, height=sys.maxsize, quality=100, max_size=0, **kwargs):
         self.url = url
         self.width = int(width)
         self.height = int(height)
