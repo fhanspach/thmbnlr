@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Welcome at thmbnlr</title>
     <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
     <style type="text/css">
-        *{
-            font-family: "Source Sans Pro", "Helvetica", "Segoe UI" , sans-serif;
+        * {
+            font-family: "Source Sans Pro", "Helvetica", "Segoe UI", sans-serif;
             color: #2c3e50;
         }
 
@@ -22,10 +26,12 @@
             font-size: 0.7rem;
 
         }
-        .code {
+
+        .code, .code > * {
             font-family: "Source Code Pro", monospace;
 
         }
+
         .content {
             width: 900px;
             background-color: #ecf0f1;
@@ -40,14 +46,58 @@
             margin-top: 1rem;
         }
 
+        #image {
+            position: absolute;
+        }
+
+        #image_container {
+            width: 400px;
+            height: 400px;
+            background-color: #343434;
+            display: block;
+            margin: 2.5rem auto 1rem;
+            border: #bdc3c7 1px solid;
+        }
+
+        .loader {
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            left: 0;
+            right: 0;
+            margin-top: 175px;
+            color: whitesmoke;
+        }
+        #footer{
+            margin-top: 2rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="content">
-        <h1>Welcome at thmbnlr</h1>
-        <p>To use the thmbnlr service you have to specify the <span class="code">url</span> parameter as in the following example:</p>
-        <p class="code code_box">http://thmbnlr.apps.its-hub.de/?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&max_size=100</p>
-        <p>This returns an image with a maximum width of 100 px and a maximum size of 100 kByte.</p>
+    <h1>Welcome at thmbnlr</h1>
+    <p>To use the thmbnlr service you have to specify the <span class="code">url</span> parameter as in the following
+        example:</p>
+    <p class="code code_box"><span id="host"></span>?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=200&size=100
+    </p>
+    <p>This returns an image with a maximum width of 200 px and a maximum size of 100 kByte:</p>
+    <div id="image_container">
+        <div class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom loader"></div>
+        <img src="#"
+             id="image"/>
+    </div>
+    <div id="footer">
+        <a href="https://github.com/fhanspach/thmbnlr"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
+
+    </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#host").text(window.location.href);
+        $("#image").attr("src", window.location.href+"?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&size=100");
+
+    })
+</script>
 </body>
 </html>
