@@ -79,9 +79,9 @@
     <h1>Welcome at thmbnlr</h1>
     <p>To use the thmbnlr service you have to specify the <span class="code">url</span> parameter as in the following
         example:</p>
-    <p class="code code_box"><span id="host"></span>?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=200&size=100
+    <p class="code code_box"><span id="host"></span>?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&max_size=100
     </p>
-    <p>This returns an image with a maximum width of 200 px and a maximum size of 100 kByte:</p>
+    <p>This returns an image with a maximum width of 400 px and a maximum size of 100 kByte:</p>
     <div id="image_container">
         <div class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom loader"></div>
         <img src="#"
@@ -95,7 +95,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#host").text(window.location.href);
-        $("#image").attr("src", window.location.href+"?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&size=100");
+        $("#image").attr("src", window.location.href+"?url=http://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg&width=400&max_size=100");
 
     })
 </script>
