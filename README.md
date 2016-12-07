@@ -22,7 +22,7 @@ The following GET-Parameters can be used to define the resulting image:
 
 |  Parameter 	| Description  	|Default|
 |---	|---	|--- |
-| **url**  	| Mandatory - The url of the original image.   	|- |
+| **url**  	| **mandatory** - The url of the original image.   	|- |
 | width/height  	| The target width/height of the thumbnail image.	Typically only one is specified, since thmbnlr always keeps the original aspect ratio of the image. | original width/height|
 | quality  	| The degree of compression in percent. 100 is the image without quality loss	| 100|
 | max_size  	| The maximum size of the result image in kB	| original size |
