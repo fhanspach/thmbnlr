@@ -14,6 +14,7 @@ app = Flask(__name__)
 ERR_URL_MISSING = "URL must not be None!"
 ERR_URL_IS_NOT_AN_IMAGE = "Not an image!"
 DEBUG = os.environ.get('THMBNLR_DEBUG', False)
+HOST = os.environ.get('HOST', '127.0.0.1')
 
 
 @app.route("/")
@@ -127,4 +128,4 @@ class Thmbnlr():
 
 
 if __name__ == "__main__":
-    app.run(debug=DEBUG)
+    app.run(debug=DEBUG, host=HOST)
